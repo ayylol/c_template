@@ -18,8 +18,8 @@ INCS := $(wildcard *.h $(foreach fd, $(SRCDIRS), $(fd)/*.h))
 OBJS := $(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(SRCS))
 INC_DIRS = $(addprefix -I , $(SRCDIRS))
 
-.PHONY: all debug release echo clean dremake rremake
-all: release
+.PHONY: all debug release echo clean remake
+all: debug
 
 debug: CFLAGS+=$(DBGFLAGS)
 debug: $(TARGET)
@@ -37,8 +37,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCS)
 clean:
 	rm -rf $(OBJDIR) $(TARGET)
 
-rremake: clean release
-dremake: clean debug
+remake: clean all
 
 echo: 
 	@echo "Source Dirs: $(SRCDIRS)"
