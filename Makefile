@@ -2,7 +2,8 @@ TARGET:=a.out
 
 # Compiler Stuff
 CC:=gcc
-CFLAGS=-Wall $(LIBFLAGS)
+CFLAGS=$(WARNFLAGS) $(LIBFLAGS)
+WARNFLAGS:=-Wall -Wextra -Werror -Wno-unused-parameter -Wno-unused-variable -Wno-unused-but-set-variable
 DBGFLAGS:=-g -Wextra -Werror
 RLSFLAGS:=-O2
 LIBFLAGS:=
