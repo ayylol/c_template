@@ -1,10 +1,12 @@
+# FIXME: REMEMBER TO RENAME TO THE PROJECT NAME!
 TARGET:=a.out
 
 # Compiler Stuff
 CC:=gcc
-CFLAGS=$(WARNFLAGS) $(LIBFLAGS)
+CFLAGS=$(WARNFLAGS) $(LIBFLAGS) $(CVERSION) -std=$(CSTD)
+CSTD:=c89
 WARNFLAGS:=-Wall -Wextra -Werror -Wno-unused-parameter -Wno-unused-variable -Wno-unused-but-set-variable
-DBGFLAGS:=-g -Wextra -Werror
+DBGFLAGS:=-g
 RLSFLAGS:=-O2
 LIBFLAGS:=
 
@@ -19,6 +21,15 @@ INCS := $(wildcard *.h $(foreach fd, $(SRCDIRS), $(fd)/*.h))
 OBJS := $(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(SRCS))
 INC_DIRS = $(addprefix -I , $(SRCDIRS))
 
+# Rules to build object files + the final binary!
+$(TARGET): $(OBJS)
+	$(CC) -o $@ $(OBJS) $(CFLAGS)
+
+$(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCS)
+	mkdir -p $(@D)
+	$(CC) -o $@ -c $< $(CFLAGS) $(INC_DIRS)
+
+# Phony Targets
 .PHONY: all debug release echo clean remake remake-rel remake-dbg
 all: debug
 
@@ -27,14 +38,6 @@ debug: $(TARGET)
 
 release: CFLAGS+=$(RLSFLAGS)
 release: $(TARGET)
-
-$(TARGET): $(OBJS)
-	$(CC) -o $@ $(OBJS) $(CFLAGS)
-
-$(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCS)
-	mkdir -p $(@D)
-	$(CC) -o $@ -c $< $(CFLAGS) $(INC_DIRS)
-
 clean:
 	rm -rf $(OBJDIR) $(TARGET)
 
@@ -42,7 +45,7 @@ remake: clean all
 remake-rel: clean release
 remake-dbg: clean debug
 
-echo: 
+echo:
 	@echo "Source Dirs: $(SRCDIRS)"
 	@echo "Includes: $(INCS)"
 	@echo "Sources: $(SRCS)"
