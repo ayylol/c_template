@@ -3,7 +3,7 @@ TARGET:=a.out
 
 # Compiler Stuff
 CC:=gcc
-CFLAGS=$(WARNFLAGS) $(LIBFLAGS) $(CVERSION) -std=$(CSTD)
+CFLAGS=$(WARNFLAGS) $(LIBFLAGS) -std=$(CSTD)
 CSTD:=c89
 WARNFLAGS:=-Wall -Wextra -Werror -Wno-unused-parameter -Wno-unused-variable -Wno-unused-but-set-variable
 DBGFLAGS:=-g
