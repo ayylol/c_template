@@ -38,6 +38,7 @@ debug: $(TARGET)
 
 release: CFLAGS+=$(RLSFLAGS)
 release: $(TARGET)
+
 clean:
 	rm -rf $(OBJDIR) $(TARGET)
 
